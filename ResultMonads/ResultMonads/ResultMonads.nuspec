@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>ResultMonads</id>
+    <version>1.0.0</version>
+    <authors>Vikram Verma</authors>
+    <owners>Vikram Verma</owners>
+    <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
+    <projectUrl>https://github.com/vikramadhav/Monads</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>Initial Draft</releaseNotes>
+    <description>Core Monads Utility for C#</description>
+    <copyright>Copyright ©2018</copyright>
+    <tags>Functional Programming C# Mondas</tags>
+    <dependencies>
+      <dependency id="Functional.Maybe" version="1.1.1" />
+    </dependencies>
+  </metadata>
+
+</package>
