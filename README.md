@@ -75,7 +75,7 @@ Result<string>.Failure(CodeFailure.CodeError);
 
 _Note: Create the Custom Error with ```Enum``` implementation,```Enum member``` should be the value which you want to pass between layer, and operate based on the ```EnumMember```_
 
-### Chaning with Monads
+### Chaining with Monads
 
 ```C#
 
