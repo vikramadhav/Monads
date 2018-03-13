@@ -21,34 +21,35 @@ Monads are flexible, so in C# we could try to represent a monadic type as a gene
 ```C#
 public struct Result<T> : IResult
 {
-         private Result(Error error)
-        {
-            _common = new ResultCommon(error.ToMaybe());
-            _resultValue = default(T);
-        }
+  private Result(Error error)
+    {
+         _common = new ResultCommon(error.ToMaybe());
+         _resultValue = default(T);
+    }
 
-        private Result(T resultValue)
-        {
-            _common = new ResultCommon(Maybe<Error>.Nothing);
-            _resultValue = resultValue;
-        }
+    private Result(T resultValue)
+    {
+        _common = new ResultCommon(Maybe<Error>.Nothing);
+        _resultValue = resultValue;
+    }
 
-        public static Result<T> Ok(T resultValue)
-        {
-            resultValue.ToMaybe().OrElse(() => new ArgumentException(nameof(resultValue)));
-            return new Result<T>(resultValue);
-        }
+    public static Result<T> Ok(T resultValue)
+    {
+      resultValue.ToMaybe().OrElse(() => new ArgumentException(nameof(resultValue)));
+      return new Result<T>(resultValue);
+    }
 
-        public static Result<T> Failure(Error error)
-        {
-            return new Result<T>(error);
-        }  
+    public static Result<T> Failure(Error error)
+    {
+        return new Result<T>(error);
+    }
 }
 
 ```
-__ Examples :
 
-__Define Error Enum__
+__Examples :__
+
+_Define Error Enum_
 
 ```C#
 
@@ -60,15 +61,13 @@ Enum CodeFailure
 
 ```
 
-
-
-__Sucess Case__
+### Sucess Case
 
 ```C#
 Result<string>.Ok(string.Empty);
 ```
 
-__Error Case__
+### Error Case
 
 ```C#
 Result<string>.Failure(CodeFailure.CodeError);
@@ -79,49 +78,38 @@ _Note: Create the Custom Error with ```Enum``` implementation,```Enum member``` 
 ### Chaning with Monads
 
 ```C#
+
   public static async Task<Result<TResult>> OnSuccessAsync<T, TResult>(
             this Result<T> result, Func<T, Task<TResult>> fn)
-        {
-            -----
-        }
+{
+}
 
-        public static Result<T> OnFailure<T>(this Result<T> result, Func<Result<T>> fn)
-        {
-            -----
-        }
+ public static Result<T> OnFailure<T>(this Result<T> result, Func<Result<T>> fn)
+{
+}
 
-        public static Result<TResult> OnSuccess<T, TResult>(this Result<T> result, Func<T, Result<TResult>> fn)
-        {
-           -----
-        }
+public static Result<TResult> OnSuccess<T, TResult>(this Result<T> result, Func<T, Result<TResult>> fn)
+{
+}
 
-        public static Result<T> OnSuccess<T>(this Result<T> result, Func<T, Result> fn)
-        {
-            -----
-        }
+public static Result<T> OnSuccess<T>(this Result<T> result, Func<T, Result> fn)
+{
+}
+public static async Task<Result> OnSuccessAsync<T>(this Result<T> result, Func<T, Task<Result>> fn)
+{
+}
+public static Result<T> Log<T>(this Result<T> result, string processorName, Action<string, T> successLog, Action<string, Error> errorLog)
+{
+}
 
-        public static async Task<Result> OnSuccessAsync<T>(this Result<T> result, Func<T, Task<Result>> fn)
-        {
-            -----
-        }
+public static async Task<Result> OnTransientFailureAsync(this Task<Result> resultTask, Func<Task<Result>> fn)
+{
+}
 
-        public static Result<T> Log<T>(
-            this Result<T> result, string processorName, Action<string, T> successLog, Action<string, Error> errorLog)
-        {
-            -----
-        }
+public static Result OnBoth(this Result result, Action action)
+{
 
-
-          public static async Task<Result> OnTransientFailureAsync(this Task<Result> resultTask, Func<Task<Result>> fn)
-        {
-          -----
-        }
-
-
-        public static Result OnBoth(this Result result, Action action)
-        {
-         ----
-        }
+}
 
 ```
 
@@ -134,7 +122,7 @@ public enum CustomerError
   DivideByZero
 }
 
- public static Task<Result<int>> Divide(int x, int y) => x==0 || y==0 ? Result<int>.Failure(Error.Create(CustomerError.DivideByZero)): Result<int>.Ok(x / y);
+public static Task<Result<int>> Divide(int x, int y) => x==0 || y==0 ? Result<int>.Failure(Error.Create(CustomerError.DivideByZero)): Result<int>.Ok(x / y);
 
 
 Add.OnFailureAsync(()=> Task1)
@@ -144,10 +132,10 @@ Add.OnFailureAsync(()=> Task1)
 
 ```
 
-__Handling Errors__
+#### Handling Errors
 
 ```C#
-if(Add(2,0).ToMaybe().Select(x=> x.Error.ToErrorType<MyC>().Value == CustomerError.DivideByZero).Value)
+if(Add(2,0).ToMaybe().Select(x=> x.Error.ToErrorType<CustomerError>().Value == CustomerError.DivideByZero).Value)
 {
 
 }
